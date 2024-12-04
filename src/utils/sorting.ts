@@ -28,3 +28,15 @@ export const sortCartItems = (items: CartItem[]): CartItem[] => {
   // Return combined sorted arrays
   return [...sortedDiscountable, ...sortedNonDiscountable];
 };
+
+export const sortCartItems2 = (items: CartItem[]): CartItem[] => {
+  return items.sort((a, b) => {
+    if (a.discount && !b.discount) {
+      return -1;
+    } else if (!a.discount && b.discount) {
+      return 1;
+    } else {
+      return a.price - b.price;
+    }
+  });
+};
