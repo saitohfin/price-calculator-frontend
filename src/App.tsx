@@ -20,8 +20,9 @@ const AVAILABLE_ITEMS: Item[] = [
   { id: '11', name: 'Pendiente', price: 4.99, discount: 40 },
   { id: '12', name: 'Pendiente', price: 6.99, discount: 40 },
   { id: '13', name: 'Pendiente', price: 9.99, discount: 40 },
+  { id: '14', name: 'Collar', price: 25.99, discount: 40 },
   { 
-    id: '14',
+    id: '15',
     name: 'Gastos de envío', 
     price: 3.99, 
     excludeFromDiscounts: true 
