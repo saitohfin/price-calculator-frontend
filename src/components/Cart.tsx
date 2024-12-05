@@ -2,7 +2,7 @@ import React from 'react';
 import { Trash2, Lock } from 'lucide-react';
 import { CartItem } from '../types';
 import { calculateTotal } from '../utils/priceCalculator';
-import { sortCartItems } from '../utils/sorting';
+import { sortCartItemsForView } from '../utils/sorting';
 
 interface CartProps {
   items: CartItem[];
@@ -10,7 +10,7 @@ interface CartProps {
 }
 
 export const Cart: React.FC<CartProps> = ({ items, onRemoveItem }) => {
-  const sortedItems = sortCartItems(items);
+  const sortedItems = sortCartItemsForView(items);
   const total = calculateTotal(sortedItems);
 
   return (

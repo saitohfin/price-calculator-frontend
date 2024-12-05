@@ -1,9 +1,9 @@
 import { CartItem } from '../types';
-import { sortCartItems2 } from './sorting';
+import { sortCartItemsByPrice } from './sorting';
 
 export const calculateDiscounts = (items: CartItem[]): CartItem[] => {
   // Sort all items first
-  const sortedItems = sortCartItems2(items);
+  const sortedItems = sortCartItemsByPrice(items);
   
   // Filter out items that should be excluded from discount calculations
   const discountableItems = sortedItems.filter(item => !item.excludeFromDiscounts);

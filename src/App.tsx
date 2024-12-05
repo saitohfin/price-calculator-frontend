@@ -4,7 +4,7 @@ import { ButtonGrid } from './components/ButtonGrid';
 import { Cart } from './components/Cart';
 import { Item, CartItem } from './types';
 import { calculateDiscounts } from './utils/priceCalculator';
-import { sortCartItems } from './utils/sorting';
+import { sortCartItemsForView } from './utils/sorting';
 
 const AVAILABLE_ITEMS: Item[] = [
   { id: '1', name: 'Accesorios', price: 18.99, discount: 40 },
@@ -34,13 +34,13 @@ function App() {
 
   const handleAddItem = (item: Item) => {
     const newItems = [...cartItems, { ...item, appliedDiscount: 0 }];
-    const sortedAndDiscounted = calculateDiscounts(sortCartItems(newItems));
+    const sortedAndDiscounted = calculateDiscounts(sortCartItemsForView(newItems));
     setCartItems(sortedAndDiscounted);
   };
 
   const handleRemoveItem = (index: number) => {
     const newItems = cartItems.filter((_, i) => i !== index);
-    const sortedAndDiscounted = calculateDiscounts(sortCartItems(newItems));
+    const sortedAndDiscounted = calculateDiscounts(sortCartItemsForView(newItems));
     setCartItems(sortedAndDiscounted);
   };
 
@@ -50,7 +50,7 @@ function App() {
         <div className="text-center">
           <div className="flex items-center justify-center gap-2 text-3xl font-bold text-gray-800 mb-2">
             <Tag className="h-8 w-8" />
-            <h1>Price Calculator</h1>
+            <h1>Luna Ambar Calculator</h1>
           </div>
           <p className="text-gray-600">Select items to calculate total with pair discounts</p>
         </div>

@@ -1,6 +1,6 @@
 import { CartItem } from '../types';
 
-export const sortCartItems = (items: CartItem[]): CartItem[] => {
+export const sortCartItemsForView = (items: CartItem[]): CartItem[] => {
   // First, separate discountable and non-discountable items
   const discountableItems = items.filter(item => !item.excludeFromDiscounts);
   const nonDiscountableItems = items.filter(item => item.excludeFromDiscounts);
@@ -29,7 +29,7 @@ export const sortCartItems = (items: CartItem[]): CartItem[] => {
   return [...sortedDiscountable, ...sortedNonDiscountable];
 };
 
-export const sortCartItems2 = (items: CartItem[]): CartItem[] => {
+export const sortCartItemsByPrice = (items: CartItem[]): CartItem[] => {
   return items.sort((a, b) => {
     if (a.discount && !b.discount) {
       return -1;
