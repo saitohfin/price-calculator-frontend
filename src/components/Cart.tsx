@@ -7,9 +7,10 @@ import { sortCartItemsForView } from '../utils/sorting';
 interface CartProps {
   items: CartItem[];
   onRemoveItem: (index: number) => void;
+  onClearCart: () => void;
 }
 
-export const Cart: React.FC<CartProps> = ({ items, onRemoveItem }) => {
+export const Cart: React.FC<CartProps> = ({ items, onRemoveItem, onClearCart }) => {
   const sortedItems = sortCartItemsForView(items);
   const total = calculateTotal(sortedItems);
 
@@ -66,6 +67,12 @@ export const Cart: React.FC<CartProps> = ({ items, onRemoveItem }) => {
               <span>Total:</span>
               <span>{total.toFixed(2)}€</span>
             </div>
+            <button
+              onClick={onClearCart}
+              className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition-colors"
+            >
+              Clear Cart
+            </button>
           </div>
         </>
       )}

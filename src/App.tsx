@@ -66,6 +66,7 @@ function App() {
             <Cart 
               items={cartItems} 
               onRemoveItem={handleRemoveItem}
+              onClearCart={() => setCartItems([])}
             />
           </div>
         </div>
