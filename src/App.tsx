@@ -4,7 +4,7 @@ import { ButtonGrid } from './components/ButtonGrid';
 import { Cart } from './components/Cart';
 import { Item, CartItem } from './types';
 import { calculateDiscounts } from './utils/priceCalculator';
-import { sortCartItemsForView } from './utils/sorting';
+import { sortCartItemsByDiscount, sortCartItemsForView } from './utils/sorting';
 
 const AVAILABLE_ITEMS: Item[] = [
   { id: '1', name: 'Accesorios', price: 18.99, discount: 20 },
@@ -34,13 +34,13 @@ function App() {
 
   const handleAddItem = (item: Item) => {
     const newItems = [...cartItems, { ...item, appliedDiscount: 0 }];
-    const sortedAndDiscounted = calculateDiscounts(sortCartItemsForView(newItems));
+    const sortedAndDiscounted = calculateDiscounts(sortCartItemsByDiscount(newItems));
     setCartItems(sortedAndDiscounted);
   };
 
   const handleRemoveItem = (index: number) => {
     const newItems = cartItems.filter((_, i) => i !== index);
-    const sortedAndDiscounted = calculateDiscounts(sortCartItemsForView(newItems));
+    const sortedAndDiscounted = calculateDiscounts(sortCartItemsByDiscount(newItems));
     setCartItems(sortedAndDiscounted);
   };
 
