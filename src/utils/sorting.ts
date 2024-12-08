@@ -40,3 +40,13 @@ export const sortCartItemsByPrice = (items: CartItem[]): CartItem[] => {
     }
   });
 };
+
+export const sortCartItemsByDiscount = (items: CartItem[]): CartItem[] => {
+  // Separar los artículos con descuento y sin descuento
+  const discountableItems = items.filter(item => item.discount);
+  const nonDiscountableItems = items.filter(item => !item.discount);
+
+
+  // Devolver los arrays combinados
+  return [...discountableItems, ...nonDiscountableItems];
+};

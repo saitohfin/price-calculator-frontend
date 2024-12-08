@@ -3,8 +3,10 @@ import { Tag } from 'lucide-react';
 import { ButtonGrid } from './components/ButtonGrid';
 import { Cart } from './components/Cart';
 import { Item, CartItem } from './types';
-import { calculateDiscounts } from './utils/priceCalculator';
-import { sortCartItemsForView } from './utils/sorting';
+import { calculateDiscountsForPairItems, calculateDiscountsForSecondItem } from './utils/priceCalculator';
+import { sortCartItemsByDiscount, sortCartItemsForView } from './utils/sorting';
+
+const TYPE_DISCOUNT:String = "SECOND_ITEM_DISCOUNT";
 
 const AVAILABLE_ITEMS: Item[] = [
   { id: '1', name: 'Accesorios', price: 18.99, discount: 20 },
@@ -34,13 +36,27 @@ function App() {
 
   const handleAddItem = (item: Item) => {
     const newItems = [...cartItems, { ...item, appliedDiscount: 0 }];
-    const sortedAndDiscounted = calculateDiscounts(sortCartItemsForView(newItems));
+    let sortedAndDiscounted: CartItem[];
+  
+    if (TYPE_DISCOUNT === "SECOND_ITEM_DISCOUNT") {
+      sortedAndDiscounted = calculateDiscountsForSecondItem(sortCartItemsForView(newItems));
+    } else {
+      sortedAndDiscounted = calculateDiscountsForPairItems(sortCartItemsByDiscount(newItems));
+    }
+  
     setCartItems(sortedAndDiscounted);
   };
 
   const handleRemoveItem = (index: number) => {
     const newItems = cartItems.filter((_, i) => i !== index);
-    const sortedAndDiscounted = calculateDiscounts(sortCartItemsForView(newItems));
+    let sortedAndDiscounted: CartItem[];
+  
+    if (TYPE_DISCOUNT === "SECOND_ITEM_DISCOUNT") {
+      sortedAndDiscounted = calculateDiscountsForSecondItem(sortCartItemsForView(newItems));
+    } else {
+      sortedAndDiscounted = calculateDiscountsForPairItems(sortCartItemsByDiscount(newItems));
+    }
+  
     setCartItems(sortedAndDiscounted);
   };
 
