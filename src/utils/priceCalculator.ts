@@ -1,7 +1,7 @@
 import { CartItem } from '../types';
 import { sortCartItemsByPrice } from './sorting';
 
-export const calculateDiscounts = (items: CartItem[]): CartItem[] => {
+export const calculateDiscountsForPairItems = (items: CartItem[]): CartItem[] => {
   // Filtrar los artículos que deben excluirse de los cálculos de descuento
   const discountableItems = items.filter(item => !item.excludeFromDiscounts);
   const nonDiscountableItems = items.filter(item => item.excludeFromDiscounts);
@@ -23,6 +23,35 @@ export const calculateDiscounts = (items: CartItem[]): CartItem[] => {
   return [...itemsWithDiscounts, ...nonDiscountableItems.map(item => ({ 
     ...item, 
     appliedDiscount: 0 
+  }))];
+};
+
+export const calculateDiscountsForSecondItem = (items: CartItem[]): CartItem[] => {
+  // Sort all items first
+  const sortedItems = sortCartItemsByPrice(items);
+
+  // Filter out items that should be excluded from discount calculations
+  const discountableItems = sortedItems.filter(item => !item.excludeFromDiscounts);
+  const nonDiscountableItems = sortedItems.filter(item => item.excludeFromDiscounts);
+
+  // Sort discountable items by price in ascending order
+  const sortedDiscountableItems = discountableItems.sort((a, b) => a.price - b.price);
+
+  // Calculate how many items should receive discounts (half rounded down)
+  const discountCount = Math.floor(sortedDiscountableItems.length / 2);
+
+  // Apply discounts to the lowest-priced items
+  const itemsWithDiscounts = sortedDiscountableItems.map((item, index) => ({
+    ...item,
+    appliedDiscount: index < discountCount
+      ? (item.price * (item.discount || 0)) / 100
+      : 0
+  }));
+
+  // Add back the non-discountable items with no discounts applied
+  return [...itemsWithDiscounts, ...nonDiscountableItems.map(item => ({
+    ...item,
+    appliedDiscount: 0
   }))];
 };
 
