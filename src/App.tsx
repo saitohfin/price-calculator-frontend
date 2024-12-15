@@ -5,35 +5,15 @@ import { Cart } from './components/Cart';
 import { Item, CartItem } from './types';
 import { calculateDiscountsForPairItems, calculateDiscountsForSecondItem } from './utils/priceCalculator';
 import { sortCartItemsByDiscount, sortCartItemsForView } from './utils/sorting';
+import { AVAILABLE_ITEMS } from './config/itemsConfig';
+import { PDFGenerator } from './utils/pdfGenerator'; // Add this import
 
 const TYPE_DISCOUNT:String = "SECOND_ITEM_DISCOUNT";
 
-const AVAILABLE_ITEMS: Item[] = [
-  { id: '1', name: 'Accesorios', price: 18.99, discount: 40 },
-  { id: '2', name: 'Conjunto', price: 14.99, discount: 40 },
-  { id: '3', name: 'Collar', price: 12.99, discount: 40 },
-  { id: '4', name: 'Pulsera', price: 9.99, discount: 40 },
-  { id: '5', name: 'Collar', price: 9.99, discount: 40 },
-  { id: '6', name: 'Anillo', price: 9.99, discount: 40 },
-  { id: '7', name: 'Pulsera', price: 12.99, discount: 40 },
-  { id: '8', name: 'Pulsera', price: 6.99, discount: 40 },
-  { id: '9', name: 'Anillo', price: 6.99, discount: 40 },
-  { id: '10', name: 'Anillo', price: 4.99, discount: 40 },
-  { id: '11', name: 'Pendiente', price: 4.99, discount: 40 },
-  { id: '12', name: 'Pendiente', price: 6.99, discount: 40 },
-  { id: '13', name: 'Pendiente', price: 9.99, discount: 40 },
-  { id: '14', name: 'Collar', price: 25.99, discount: 40 },
-  { id: '15', name: 'Collar', price: 14.99, discount: 40 },
-  { 
-    id: '16',
-    name: 'Gastos de envío', 
-    price: 3.99, 
-    excludeFromDiscounts: true 
-  },
-];
-
 function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [name, setName] = useState<string>('');
+  const [isNameEmpty, setIsNameEmpty] = useState<boolean>(false);
 
   const handleAddItem = (item: Item) => {
     const newItems = [...cartItems, { ...item, appliedDiscount: 0 }];
@@ -61,6 +41,20 @@ function App() {
     setCartItems(sortedAndDiscounted);
   };
 
+  const handleSaveName = () => {
+    if (!name.trim()) {
+      setIsNameEmpty(true);
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      alert('El carrito está vacío.');
+      return;
+    }
+
+    PDFGenerator.generatePDF(name, cartItems);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -83,8 +77,36 @@ function App() {
             <Cart 
               items={cartItems} 
               onRemoveItem={handleRemoveItem}
-              onClearCart={() => setCartItems([])}
+              onClearCart={() => {
+                setCartItems([]);
+                setName('');
+                setIsNameEmpty(false);
+              }}
             />
+            <div className="mt-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+                Nombre
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (e.target.value.trim()) {
+                    setIsNameEmpty(false);
+                  }
+                }}
+                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${isNameEmpty ? 'border-red-500' : ''}`}
+              />
+              {isNameEmpty && <p className="text-red-500 text-xs italic">Por favor, introduce un nombre.</p>}
+              <button
+                onClick={handleSaveName}
+                className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Guardar
+              </button>
+            </div>
           </div>
         </div>
       </div>
