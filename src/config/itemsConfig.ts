@@ -7,6 +7,7 @@ const itemsWithoutId: Omit<Item, 'id'>[] = [
   { name: 'Pulsera', price: 12.99, discount: 40 },
   { name: 'Pulsera', price: 6.99, discount: 40 },
   { name: 'Pulsera', price: 14.99, discount: 40 },
+  { name: 'Anillo', price: 12.99, discount: 40 },
   { name: 'Anillo', price: 6.99, discount: 40 },
   { name: 'Anillo', price: 4.99, discount: 40 },
   { name: 'Pendiente', price: 4.99, discount: 40 },
