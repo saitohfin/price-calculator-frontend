@@ -4,6 +4,7 @@ export interface Item {
   price: number;
   discount?: number;
   excludeFromDiscounts?: boolean;
+  isPromotion?: boolean;
 }
 
 export interface CartItem extends Item {

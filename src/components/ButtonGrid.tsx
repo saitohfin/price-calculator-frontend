@@ -17,8 +17,13 @@ export const ButtonGrid: React.FC<ButtonGridProps> = ({ items, onItemClick }) =>
       return acc;
     }, {} as Record<string, Item[]>);
 
-    // Sort groups by name
-    return Object.entries(groups).sort(([nameA], [nameB]) => nameA.localeCompare(nameB));
+    // Sort groups first by the number of items (descending), then by name (ascending)
+    return Object.entries(groups).sort(([nameA, itemsA], [nameB, itemsB]) => {
+      if (itemsA.length !== itemsB.length) {
+        return itemsB.length - itemsA.length; // Sort by number of items (descending)
+      }
+      return nameA.localeCompare(nameB); // Sort by name (ascending)
+    });
   }, [items]);
 
   return (
@@ -33,7 +38,7 @@ export const ButtonGrid: React.FC<ButtonGridProps> = ({ items, onItemClick }) =>
                 <PriceButton
                   key={item.id}
                   {...item}
-                  onClick={onItemClick}
+                  onClick={() => onItemClick(item)}
                 />
               ))}
           </div>
