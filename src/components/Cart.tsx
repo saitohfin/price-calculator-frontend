@@ -45,7 +45,9 @@ export const Cart: React.FC<CartProps> = ({ items, onRemoveItem, onClearCart }) 
                   </div>
                   <div className="flex justify-between items-center text-sm">
                     <div>
-                      <span className="text-gray-600">{item.price.toFixed(2)}€</span>
+                      <span className={`text-gray-600 ${item.isPromotion ? 'text-red-600' : ''}`}>
+                        {item.price.toFixed(2)}€
+                      </span>
                       {item.appliedDiscount > 0 && (
                         <span className="ml-2 text-green-600">
                           (-{((item.appliedDiscount / item.price) * 100).toFixed(0)}%)

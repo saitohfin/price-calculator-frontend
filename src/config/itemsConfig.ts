@@ -29,7 +29,8 @@ const itemsWithoutId: Omit<Item, 'id'>[] = [
   { 
     name: 'Descuento nuevo cliente', 
     price: -2.00, 
-    excludeFromDiscounts: true 
+    excludeFromDiscounts: true,
+    isPromotion: true, 
   },
   { 
     name: 'Gastos de envío', 
